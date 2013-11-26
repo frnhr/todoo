@@ -92,7 +92,7 @@ STATIC_URL = '/static/'
 APPEND_SLASH = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff',),
     'PAGINATE_BY': 10
 }
 
