@@ -92,6 +92,8 @@ STATIC_URL = '/static/'
 
 APPEND_SLASH = True
 
+LOGIN_REDIRECT_URL = '/console/'
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff',),
     'PAGINATE_BY': 10
