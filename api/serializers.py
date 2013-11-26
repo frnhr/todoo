@@ -1,10 +1,22 @@
 from django.contrib.auth.models import User, Group
+from rest_framework.reverse import reverse as rest_framework_reverse
 from core.models import Item
 from rest_framework import serializers
 
 
-
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        """
+        Sets current user is none is provided.
+        """
+        #@TODO All this should probably be moved somewhere else, a custom Field perhaps?
+        data = kwargs.get('data', None)
+        request = kwargs.get('context').get('request')
+        if data is not None:
+            url = rest_framework_reverse('user-detail', kwargs={'pk': request.user.id}, request=request)
+            data['user'] = data.get('user', url)
+        super(ItemSerializer, self).__init__(*args, **kwargs)
 
     title = serializers.SerializerMethodField('get_item_title')
 
