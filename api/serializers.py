@@ -20,10 +20,6 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
     title = serializers.SerializerMethodField('get_item_title')
 
-    def get_default_fields(self):
-        fields = super(ItemSerializer, self).get_default_fields()
-        return fields
-
     def get_item_title(self, obj):
         return unicode(obj)
 

@@ -10,7 +10,7 @@ import permissions
 
 class ItemViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows todoo items to be viewed or edited.
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
