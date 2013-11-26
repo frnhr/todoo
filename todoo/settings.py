@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'core',
     'api',
+    'console',
     'rest_framework',
     'markdown',
     'django_filters',

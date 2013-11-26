@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 from django.contrib.auth.models import User, Group
 from core.models import Item
 from rest_framework import viewsets
