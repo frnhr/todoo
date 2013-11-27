@@ -6,3 +6,26 @@
 .error {
     color: red;
 }
+
+textarea {
+    resize: none;
+}
+
+.items .item .memo .full {
+    display: none;
+}
+
+.items .item.prototype,
+.items .item.form {
+    display: nonee;
+}
+.items .item.form input {
+    max-width: 97%;
+}
+.items .item.form textarea {
+    height: 4em;
+    width: 97%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
