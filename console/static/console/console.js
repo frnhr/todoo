@@ -44,7 +44,12 @@ jQuery(function($){
             var bName = b[field];
             if (aName == null) aName = '0';
             if (bName == null) bName = '0';
-            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)) * direction;
+            var compare =  ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)) * direction;
+            if (compare === 0) {
+                compare = ((a.url < b.url) ? -1 : ((a.url > b.url) ? 1 : 0)) * direction;
+            }
+            return compare
+
         }
     };
 
