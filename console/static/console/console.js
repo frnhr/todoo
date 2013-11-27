@@ -22,7 +22,7 @@ jQuery(function($){
 
     var get_items = function() {
         var items = [];
-        var defer = $.Deferred();
+        var dfd = $.Deferred();
         $.ajax({
             url: "/api/items/" //@TODO pass dynamically
         })
@@ -30,9 +30,9 @@ jQuery(function($){
             //@TODO error handling
             //@TODO pagination
             items = items.concat(data.results);
-            defer.resolve(items);
+            dfd.resolve(items);
         });
-        return defer;
+        return dfd;
     };
 
     var sort_by = function(field, direction) {
@@ -49,7 +49,11 @@ jQuery(function($){
     };
 
     var sort_items = function(items, $ul) {
-        return items.sort(sort_by($ul.data('sortby'), $ul.data('sortdir')));
+        $ul.find('.header').find('.sortdir_U, .sortdir_D').removeClass('sortdir_U sortdir_D');
+        var sortby = $ul.data('sortby');
+        var sortdir = $ul.data('sortdir');
+        $ul.find('.header .'+sortby).addClass( 'sortdir_' + (sortdir === 1 ? 'U' : 'D' ) );
+        return items.sort(sort_by(sortby, sortdir));
     };
 
     var render_items = function(items, $ul) {

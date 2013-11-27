@@ -18,7 +18,29 @@ textarea {
 }
 .items .header .sortable {
     cursor: pointer;
+    position: relative;
 }
+
+.items .header .sortable.sortdir_U:after,
+.items .header .sortable.sortdir_D:after {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 10%;
+    cursor: pointer;
+}
+.items .header .sortable.sortdir_U:after {
+    content: "\25BC";
+}
+.items .header .sortable.sortdir_D:after {
+    content: "\25B2";
+}
+.items .header .sortable:hover,
+.items .header .sortable:hover {
+    text-decoration: underline;
+
+}
+
 
 .items .item .memo .full {
     display: none;
