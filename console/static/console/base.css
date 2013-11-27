@@ -29,10 +29,10 @@ textarea {
     right: 10%;
     cursor: pointer;
 }
-.items .header .sortable.sortdir_U:after {
+.items .header .sortable.sortdir_D:after {
     content: "\25BC";
 }
-.items .header .sortable.sortdir_D:after {
+.items .header .sortable.sortdir_U:after {
     content: "\25B2";
 }
 .items .header .sortable:hover,
@@ -42,13 +42,17 @@ textarea {
 }
 
 
+.items .item .completed {
+    text-align: center  ;
+}
+
 .items .item .memo .full {
     display: none;
 }
 
 .items .item.prototype,
-.items .item.form {
-    display: nonee;
+.items .item.protoform {
+    display: none;
 }
 .items .item.form input {
     max-width: 97%;

@@ -62,7 +62,7 @@ jQuery(function($){
     };
 
     var render_items = function(items, $ul) {
-        $ul.find('li.item:not(.prototype):not(.form):not(.header)').remove();
+        $ul.find('li.item:not(.prototype):not(.protoform):not(.header)').remove();
         var $prototype = $ul.find('li.prototype');
         $.each(items, function(i, item){
             $item = $prototype.clone().removeClass('prototype');
@@ -86,6 +86,7 @@ jQuery(function($){
 
     var change_order_click = function(event) {
         event.preventDefault();
+        //@TODO check & warn for any active forms
         var $this = $(this);
         var $ul = $this.parents('.items');
         var current_sortby = $ul.data('sortby');
@@ -121,7 +122,116 @@ jQuery(function($){
             $this.attr('disabled', false);
         });
     };
-    $items.on('click', '.item .completed input', completed_click);
+    $items.on('click', '.item:not(.form) .completed input', completed_click);
+
+
+    var edit_click = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var $item = $this.parents('.item');
+        var $ul = $item.parent('.items');
+        var $form = $ul.find('.item.protoform').clone().removeClass('protoform').addClass('form').show();
+        $form.insertAfter($item);
+        var item = $item.data('item');
+        fill_form($form, item);
+        $form.data('oitem', $item);
+        $item.hide();
+    };
+    $items.on('click', '.item a.edit', edit_click);
+
+
+    var fill_form = function($form, item) {
+        $form.data('item', item);
+        console.info(item);
+        console.info(item.memo);
+        $form
+            .find('.completed input')
+                .prop('checked', item.completed)
+                .end()
+            .find('.memo textarea')
+                .val(item.memo)
+                .end()
+            .find('.due_date input')
+                .val(item.due_date)
+                .end()
+            .find('.priority input')
+                .val(item.priority)
+                .end()
+    };
+
+    var parse_form = function($form) {
+        return $.extend(true, $form.data('item'), {
+            completed : $form.find('.completed input').is(':checked'),
+            memo      : $form.find('.memo textarea').val(),
+            due_date  : $form.find('.due_date input').val(),
+            priority  : $form.find('.priority input').val()
+        });
+    };
+
+
+    var cancel_click = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var $form = $this.parents('.item.form');
+        $form.data('oitem').show();
+        $form.remove();
+    };
+    $items.on('click', '.item.form a.cancel', cancel_click);
+
+    var save_click = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var $form = $this.parents('.form');
+        var old_item = $form.data('item');
+        var new_item = parse_form($form);
+        var $ul = $form.parents('.items');
+        $.when(
+            put_item(new_item),
+            (function(){
+                var dfd = $.Deferred();
+                dfd.reject();
+                //return dfd;
+            })(),
+            $.wait(500)  // sense of heavy, baby!
+        ).done(function(data){
+console.info('DATA:');
+console.info(data);
+            var i = items.indexOf(old_item);
+            if (i > -1) {
+                items.splice(i, 1);
+            }
+            items.push(data);
+            items = sort_items(items, $ul);
+            render_items(items, $ul);
+        }).fail(function(data){
+            console.info('FAIL');
+            console.info(data);
+            //@TODO render errors
+        });
+    };
+    $items.on('click', '.item.form a.save', save_click);
+
+    var put_item = function(item) {
+        var dfd = $.Deferred();
+        //item.priority=123;
+        $.ajax({
+            method: 'PUT',
+            url: item.url,
+            data : item
+        })
+        .done(function(data){
+            dfd.resolve(data);
+        }).fail(function(data){
+                var errors;
+                if (typeof data.responseJSON !== 'undefined') {
+                    errors = data.responseJSON
+                } else {
+                    errors = ['unknown error!'];
+                }
+                dfd.reject(errors)
+        });
+        return dfd;
+    };
 
     get_items()
         .done(function(data){
