@@ -13,9 +13,10 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
         #@TODO All this should probably be moved somewhere else, a custom Field perhaps?
         data = kwargs.get('data', None)
         request = kwargs.get('context').get('request')
-        if data is not None:
+        if data is not None and not data.get('user', False):
+            #@TODO throws "AttributeError: This QueryDict instance is immutable" for PUT
             url = rest_framework_reverse('user-detail', kwargs={'pk': request.user.id}, request=request)
-            data['user'] = data.get('user', url)
+            data['user'] = url
         super(ItemSerializer, self).__init__(*args, **kwargs)
 
     title = serializers.SerializerMethodField('get_item_title')

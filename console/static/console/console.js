@@ -1,4 +1,10 @@
 
+jQuery.wait = function(time) {
+    return $.Deferred(function(dfd) {
+        setTimeout(dfd.resolve, time);
+    });
+};
+
 
 jQuery(function($){
 
@@ -9,6 +15,10 @@ jQuery(function($){
     var $items = $('ul.items');
     $items.data('sortby', 'priority');
     $items.data('sortdir', -1);
+
+    $.ajaxSetup({
+        headers: { 'X-CSRFToken': $.cookie('csrftoken') }
+    });
 
     var get_items = function() {
         var items = [];
@@ -62,6 +72,27 @@ jQuery(function($){
             $item.appendTo($ul);
         });
     };
+
+    var completed_click = function(){
+        var $this = $(this);
+        var $item = $this.parents('.item');
+        var item = $item.data('item');
+        item.completed = $this.is(':checked');
+        $this.attr('disabled', 'disabled');
+        $.when(
+            $.ajax({
+                method: 'PUT',
+                url: $item.data('item').url,
+                data : item
+            }),
+            $.wait(500)  // sense of heavy, baby!
+        )
+        .done(function(data){
+            $this.prop('checked', data.checked);
+            $this.attr('disabled', false);
+        });
+    };
+    $items.on('click', '.item .completed input', completed_click);
 
     get_items()
         .done(function(data){
