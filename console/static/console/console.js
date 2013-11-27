@@ -42,6 +42,8 @@ jQuery(function($){
         return function(a, b) {
             var aName = a[field];
             var bName = b[field];
+            if (aName == null) aName = '0';
+            if (bName == null) bName = '0';
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)) * direction;
         }
     };
@@ -51,10 +53,10 @@ jQuery(function($){
     };
 
     var render_items = function(items, $ul) {
-        $ul.find('li:not(.prototype):not(.form)').remove();
+        $ul.find('li.item:not(.prototype):not(.form):not(.header)').remove();
         var $prototype = $ul.find('li.prototype');
         $.each(items, function(i, item){
-            $item = $prototype.clone();
+            $item = $prototype.clone().removeClass('prototype');
             $item
                 .find('.completed input')
                     .prop('checked', item.completed)
@@ -73,7 +75,25 @@ jQuery(function($){
         });
     };
 
-    var completed_click = function(){
+    var change_order_click = function(event) {
+        event.preventDefault();
+        var $this = $(this);
+        var $ul = $this.parents('.items');
+        var current_sortby = $ul.data('sortby');
+        var current_sortdir = $ul.data('sortdir');
+        var new_sortby = $this.data('sortby');
+        var new_sortdir = $this.data('sortdir');
+        if (current_sortby === new_sortby) {
+            new_sortdir = -1 * current_sortdir
+        }
+        $ul.data('sortby', new_sortby);
+        $ul.data('sortdir', new_sortdir);
+        items = sort_items(items, $ul);
+        render_items(items, $ul);
+    };
+    $items.on('click', '.header .sortable', change_order_click);
+
+    var completed_click = function() {
         var $this = $(this);
         var $item = $this.parents('.item');
         var item = $item.data('item');
@@ -97,7 +117,6 @@ jQuery(function($){
     get_items()
         .done(function(data){
             items = sort_items(data, $items);
-            l = items; $l = $items;
             render_items(items, $items);
         });
 

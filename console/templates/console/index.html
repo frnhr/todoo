@@ -23,6 +23,15 @@
                             <span class="full"></span>
                         </span>
                 </li>
+                <li class="item grid header">
+                    <span class="completed unit one-of-five">Is completed</span>
+                    <span class="priority unit one-of-five sortable" data-sortby="priority" data-sortdir="-1">Priority</span>
+                    <span class="due_date unit one-of-five sortable" data-sortby="due_date" data-sortdir="1">Due date</span>
+                        <span class="memo unit two-of-five">
+                            <span class="title">Memo</span>
+                            <span class="full"></span>
+                        </span>
+                </li>
                 {% for i in "1234567" %}
                     <li class="item grid">
                         <span class="completed unit one-of-five"><input type="checkbox" /></span>
