@@ -257,6 +257,12 @@ jQuery(function($){
             .find('.priority input')
                 .val(item.priority)
                 .end()
+        $form.find('.due_date input').DatePicker({
+            date: item.due_date,
+            onChange : function(date_str, date, input){
+                $(input).val(date_str);
+            }
+        });
     };
 
     var parse_form = function($form) {
