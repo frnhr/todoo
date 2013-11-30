@@ -43,19 +43,48 @@ textarea {
 
 .items {
     position: relative;
+    overflow: visible;
+    list-style: none;
 }
 
 .items .item {
     z-index: 1;
+}
+.items .item:hover {
+    z-index: 2;
 }
 
 .items .item .completed {
     text-align: center  ;
 }
 
+.items .item .memo {
+    position: relative;
+    overflow: visible;
+}
+.items .item .memo .title {
+    height: 1.5em;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+}
+
 .items .item .memo .full {
     display: none;
+    position: absolute;
+    background: #ffffff;
+    top: 1px;
+    right: 10px;
+    left: 0;
 }
+.items .item:hover .memo .full {
+    display: block;
+    -webkit-box-shadow: 1px 1px 2px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 1px 2px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 1px 2px rgba(50, 50, 50, 0.75);
+}
+
+
 .items .item .hoverable_actions {
     opacity: 0;
 }
