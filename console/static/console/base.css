@@ -63,7 +63,7 @@ textarea {
     opacity: 1;
 }
 
-.items.with_active_form .item {
+.items.with_active_form > li {
     opacity: 0.3;
 }
 .items.with_active_form .item.form {

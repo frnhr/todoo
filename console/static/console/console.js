@@ -81,6 +81,12 @@ function mysql2Date( mysql_timestamp ) {
     return d;
 }
 
+var blank_item = {
+    url : '/api/items/',
+    priority : '',
+    due_date : '',
+    memo : ''
+};
 
 jQuery(function($){
 
@@ -204,6 +210,18 @@ jQuery(function($){
     };
     $items.on('click', '.item:not(.form) .completed input', completed_click);
 
+    var new_click = function(event) {
+        event.preventDefault();
+        var $this = $(this);
+        var $form = $items.find('.item.protoform').clone().removeClass('protoform').addClass('form').show();
+        $form.insertAfter($items.find('.item.header'));
+        var item = jQuery.extend({}, blank_item);
+        fill_form($form, item);
+        $form.data('oitem', null);
+        $items.addClass('with_active_form');
+
+    };
+    $('a.new_item').on('click', new_click);
 
     var edit_click = function(event){
         event.preventDefault();
@@ -253,7 +271,8 @@ jQuery(function($){
         var $this = $(this);
         var $form = $this.parents('.item.form');
         var $ul = $form.parent();
-        $form.data('oitem').show();
+        if ( $form.data('oitem') )
+            $form.data('oitem').show();
         $form.remove();
         $ul.removeClass('with_active_form');
     };
@@ -268,7 +287,7 @@ jQuery(function($){
         var $ul = $form.parents('.items');
         $form.addClass('working');
         $.when(
-            put_item(new_item),
+            put_or_post_item(new_item),
             (function(){
                 var dfd = $.Deferred();
                 dfd.reject();
@@ -291,11 +310,15 @@ jQuery(function($){
     };
     $items.on('click', '.item.form a.save', save_click);
 
-    var put_item = function(item) {
+    var put_or_post_item = function(item) {
         var dfd = $.Deferred();
         //item.priority=123;
+        var method = 'PUT';
+        if ( typeof item.user === 'undefined' ) {
+            method = 'POST';
+        }
         $.ajax({
-            method: 'PUT',
+            method: method,
             url: item.url,
             data : item
         })
@@ -313,10 +336,13 @@ jQuery(function($){
         return dfd;
     };
 
-    get_items()
-        .done(function(data){
+    $.when(
+        get_items(),
+        $.wait(1000)
+    ).done(function(data){
             items = sort_items(data, $items);
             render_items(items, $items);
+            $('.loading').hide();
         });
 
 

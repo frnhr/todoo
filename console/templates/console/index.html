@@ -3,9 +3,11 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 {% block main %}
     <div class="app">
-        <span class="unit span-grid loading">now loading...</span>
         <div class="hidden_ grid">
             <ul class="items unit span-grid">
+                <li class="actions unit">
+                    <a href="#" class="new_item">New Item</a>
+                </li>
                 <li class="item protoform grid">
                     <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="save">save</a> / <a href="#" class="cancel">cancel</a></span>
                     <span class="priority unit one-of-five"><input type="text" id="input_priority" /></span>
@@ -31,6 +33,9 @@
                         <span class="title">Memo</span>
                         <span class="full"></span>
                     </span>
+                </li>
+                <li class="item unit loading">
+                    now loading...
                 </li>
             </ul>
         </div>
