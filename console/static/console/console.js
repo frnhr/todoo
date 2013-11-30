@@ -106,15 +106,23 @@ jQuery(function($){
     var get_items = function() {
         var items = [];
         var dfd = $.Deferred();
-        $.ajax({
-            url: "/api/items/" //@TODO pass dynamically
-        })
-        .done(function(data) {
-            //@TODO error handling
-            //@TODO pagination
-            items = items.concat(data.results);
-            dfd.resolve(items);
-        });
+
+        var ajax_fetch = function(url) {
+            $.ajax({
+                url: url
+            })
+            .done(function(data) {
+                //@TODO error handling
+                items = items.concat(data.results);
+                if ( data.next ) {
+                    ajax_fetch(data.next);
+                } else {
+                    dfd.resolve(items);
+                }
+            });
+        };
+        ajax_fetch("/api/items/"); //@TODO pass dynamically
+
         return dfd;
     };
 
