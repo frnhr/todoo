@@ -11,12 +11,15 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
         Sets current user is none is provided.
         """
         #@TODO All this should probably be moved somewhere else, a custom Field perhaps?
+        #@TODO If that fails: in the Model set default user to None and overload save() to populate current user.
         data = kwargs.get('data', None)
         request = kwargs.get('context').get('request')
         if data is not None and not data.get('user', False):
             #@TODO throws "AttributeError: This QueryDict instance is immutable" for PUT
             url = rest_framework_reverse('user-detail', kwargs={'pk': request.user.id}, request=request)
+            data._mutable = True  # @TODO nono! to don't do this!
             data['user'] = url
+            data._mutable = False
         super(ItemSerializer, self).__init__(*args, **kwargs)
 
     title = serializers.SerializerMethodField('get_item_title')
