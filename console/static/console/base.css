@@ -77,6 +77,7 @@ textarea {
     top: 0;
     right: 0;
     left: 0;
+    white-space: pre-line;
 }
 .items .item:hover .memo .full {
     display: block;
