@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1>ToDoo app</h1>
+<p>Best todo ever!</p>
+<p>Grab an <a href="{% url 'registration_register' %}">account</a>! Oh, you have an account? Good for you! Still here? <a href="{% url 'login' %}">Go login yourself!</a></p>
+{% endblock main %}
