@@ -336,9 +336,52 @@ jQuery(function($){
         return dfd;
     };
 
+    var delete_item = function(item) {
+        var dfd = $.Deferred();
+        //item.priority=123;
+        var method = 'DELETE';
+        $.ajax({
+            method: method,
+            url: item.url
+        })
+            .done(function(data){
+                dfd.resolve(data);
+            }).fail(function(data){
+                var errors;
+                if (typeof data.responseJSON !== 'undefined') {
+                    errors = data.responseJSON
+                } else {
+                    errors = ['unknown error!'];
+                }
+                dfd.reject(errors)
+            });
+        return dfd;
+    };
+
+    var delete_click = function(event) {
+        event.preventDefault();
+        var $item = $(this).parents('.item');
+        var item = $item.data('item');
+        $.prompt("Really delete this item?", {
+            title: "Are you Serious?",
+            buttons: { "Yes, Ok, Delete": true, "No, Cancel, Whaat?": false },
+            submit: function(e,v,m,f){
+                if ( v == true ) {
+                    $.when(
+                        delete_item(item),
+                        $.wait(500)  // sense of heavy, baby!
+                    ).done(function(data){
+                        $item.remove();
+                    });
+                }
+            }
+        });
+    };
+    $items.on('click', '.delete', delete_click);
+
     $.when(
         get_items(),
-        $.wait(1000)
+        $.wait(500)  // sense of heavy, baby!
     ).done(function(data){
             items = sort_items(data, $items);
             render_items(items, $items);
