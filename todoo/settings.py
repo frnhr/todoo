@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'core',
     'api',
+    'console',
     'rest_framework',
     'markdown',
     'django_filters',
@@ -90,6 +91,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 APPEND_SLASH = True
+
+LOGIN_REDIRECT_URL = '/console/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff',),

@@ -1,0 +1,112 @@
+
+.yesjs {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+textarea {
+    resize: none;
+}
+
+.items .header {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.items .header .sortable {
+    cursor: pointer;
+    position: relative;
+}
+
+.items .header .sortable.sortdir_U:after,
+.items .header .sortable.sortdir_D:after {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 10%;
+    cursor: pointer;
+}
+.items .header .sortable.sortdir_D:after {
+    content: "\25BC";
+}
+.items .header .sortable.sortdir_U:after {
+    content: "\25B2";
+}
+.items .header .sortable:hover,
+.items .header .sortable:hover {
+    text-decoration: underline;
+
+}
+
+.items {
+    position: relative;
+}
+
+.items .item {
+    z-index: 1;
+}
+
+.items .item .completed {
+    text-align: center  ;
+}
+
+.items .item .memo .full {
+    display: none;
+}
+.items .item .hoverable_actions {
+    opacity: 0;
+}
+.items .item:hover .hoverable_actions {
+    opacity: 1;
+}
+
+.items.with_active_form > li {
+    opacity: 0.3;
+}
+.items.with_active_form .item.form {
+    opacity: 1;
+    position: static;
+    z-index: 3;
+}
+.items.with_active_form .item.form:after {
+    content: "";
+    display: block;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.items.with_active_form .item.form > * {
+    z-index: 3;
+}
+.items.with_active_form .item.form.working > * {
+    z-index: 1;
+    opacity: 0.5;
+}
+.items.with_active_form .item.form.working:after {
+    z-index: 2;
+}
+
+.items .item.prototype,
+.items .item.protoform {
+    display: none;
+}
+.items .item.form input {
+    max-width: 97%;
+}
+.items .item.form textarea {
+    height: 4em;
+    width: 97%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.jqibox form {
+    margin: 0;
+}
