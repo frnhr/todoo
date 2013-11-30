@@ -15,7 +15,7 @@
                     </span>
                 </li>
                 <li class="item grid prototype">
-                    <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="edit">edit</a></span>
+                    <span class="completed unit one-of-five"><input type="checkbox" /> <span class="hoverable_actions">/ <a href="#" class="edit">edit</a></span></span>
                     <span class="priority unit one-of-five"></span>
                     <span class="due_date unit one-of-five"></span>
                         <span class="memo unit two-of-five">
@@ -27,22 +27,11 @@
                     <span class="completed unit one-of-five">Actions</span>
                     <span class="priority unit one-of-five sortable" data-sortby="priority" data-sortdir="-1">Priority</span>
                     <span class="due_date unit one-of-five sortable" data-sortby="due_date" data-sortdir="1">Due date</span>
-                        <span class="memo unit two-of-five">
-                            <span class="title">Memo</span>
-                            <span class="full"></span>
-                        </span>
+                    <span class="memo unit two-of-five">
+                        <span class="title">Memo</span>
+                        <span class="full"></span>
+                    </span>
                 </li>
-                {% for i in "1234567" %}
-                    <li class="item grid">
-                        <span class="completed unit one-of-five"><input type="checkbox" /></span>
-                        <span class="priority unit one-of-five">High!</span>
-                        <span class="due_date unit one-of-five">17. 12. 2013.</span>
-                        <span class="memo unit two-of-five">
-                            <span class="title">Title title first line</span>
-                            <span class="full">Title title first line<br />and all the other lines<br />> as well!</span>
-                        </span>
-                    </li>
-                {% endfor %}
             </ul>
         </div>
     </div>

@@ -6,6 +6,82 @@ jQuery.wait = function(time) {
 };
 
 
+
+// Format examples, is up to you how to retrieve these formats, and to decide how many formats you need
+var dateFormats = {
+    "usa" :{
+        "D" : ["Sun", "Mon", "Tue", "Wen", "Thu", "Fri", "Sat"],
+        "l" : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "M" : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "F" : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "format" : "%l, %F %d, %Y %h:%i:%s %A"
+    },
+
+    "usa_short" :{
+        "D" : ["Sun", "Mon", "Tue", "Wen", "Thu", "Fri", "Sat"],
+        "l" : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "M" : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "F" : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "format" : "%M %j. %Y"
+    },
+
+    "ita": {
+        "D" : ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+        "l" : ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"],
+        "M" : ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+        "F" : ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno","Luglio","Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+        "format" : "%l %d %F %Y %H:%i:%s"
+    },
+
+    "spa" : {
+        "D" : ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+        "l" : ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+        "M" : ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+        "F" : ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+        "format" : "%l %d de %F de %Y %H:%i:%s"
+    },
+
+    "rus" : {
+        "D" : ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+        "l" : ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
+        "M" : ["янв.", "февр.", "марта", "апр.", "мая", "июня", "июля", "авг.", "сент.", "окт.", "нояб.", "дек."],
+        "F" : ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
+        "format" : "%l, %d %F %Y г. %H:%i:%s"
+    },
+
+    "zho" : {
+        "D" : ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+        "l" : ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+        "M" : ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        "F" : ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        "ampm" : ["上午", "下午"],
+        "format" : "%Y年%F%d%l %a%g:%i:%s"
+    },
+
+    "jpn" : {
+        "D" : ["日", "月", "火", "水", "木", "金", "土"],
+        "l" : ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+        "M" : ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        "F" : ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        "format" : "%Y年%F%d%l %G:%i:%s"
+    }
+};
+
+function mysql2Date( mysql_timestamp ) {
+    // Split timestamp into [ Y, M, D, h, m, s ]
+    var t = mysql_timestamp.split(/[- :]/);
+    var d = null;
+    if ( t.length < 4 ) {
+        d = new Date(t[0], t[1]-1, t[2]);
+    } else if ( t.length < 6 ) {
+        d = new Date(t[0], t[1]-1, t[2], t[3], t[4]);
+    } else if ( t.length < 7 ) {
+        d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+    }
+    return d;
+}
+
+
 jQuery(function($){
 
     $('.nojs').hide();
@@ -73,15 +149,19 @@ jQuery(function($){
                 .find('.title')
                     .html(item.title)
                     .end()
-                .find('.due_date')
-                    .html(item.due_date)
-                    .end()
                 .find('.priority')
                     .html(item.priority)
                     .end()
                 .data('item', item);
+            if ( item.due_date ) {
+                $item.find('.due_date')
+                    .data('value', item.due_date)
+                    .i18Now(dateFormats.usa_short)
+                    .i18Now('setCustomDate', mysql2Date(item.due_date));
+            }
             $item.appendTo($ul);
         });
+        $ul.removeClass('with_active_form');
     };
 
     var change_order_click = function(event) {
@@ -136,14 +216,13 @@ jQuery(function($){
         fill_form($form, item);
         $form.data('oitem', $item);
         $item.hide();
+        $ul.addClass('with_active_form');
     };
     $items.on('click', '.item a.edit', edit_click);
 
 
     var fill_form = function($form, item) {
         $form.data('item', item);
-        console.info(item);
-        console.info(item.memo);
         $form
             .find('.completed input')
                 .prop('checked', item.completed)
@@ -173,8 +252,10 @@ jQuery(function($){
         event.preventDefault();
         var $this = $(this);
         var $form = $this.parents('.item.form');
+        var $ul = $form.parent();
         $form.data('oitem').show();
         $form.remove();
+        $ul.removeClass('with_active_form');
     };
     $items.on('click', '.item.form a.cancel', cancel_click);
 
@@ -185,6 +266,7 @@ jQuery(function($){
         var old_item = $form.data('item');
         var new_item = parse_form($form);
         var $ul = $form.parents('.items');
+        $form.addClass('working');
         $.when(
             put_item(new_item),
             (function(){
@@ -194,8 +276,6 @@ jQuery(function($){
             })(),
             $.wait(500)  // sense of heavy, baby!
         ).done(function(data){
-console.info('DATA:');
-console.info(data);
             var i = items.indexOf(old_item);
             if (i > -1) {
                 items.splice(i, 1);
@@ -204,7 +284,7 @@ console.info(data);
             items = sort_items(items, $ul);
             render_items(items, $ul);
         }).fail(function(data){
-            console.info('FAIL');
+            console.error('FAIL');
             console.info(data);
             //@TODO render errors
         });
