@@ -52,6 +52,7 @@ textarea {
 }
 .items .item:hover {
     z-index: 2;
+    background: #ddd;
 }
 
 .items .item .completed {
@@ -72,16 +73,16 @@ textarea {
 .items .item .memo .full {
     display: none;
     position: absolute;
-    background: #ffffff;
-    top: 1px;
-    right: 10px;
+    background: #ddd;
+    top: 0;
+    right: 0;
     left: 0;
 }
 .items .item:hover .memo .full {
     display: block;
-    -webkit-box-shadow: 1px 1px 2px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    1px 1px 2px rgba(50, 50, 50, 0.75);
-    box-shadow:         1px 1px 2px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 2px 2px 1px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 1px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 1px rgba(50, 50, 50, 0.75);
 }
 
 
