@@ -80,7 +80,8 @@ textarea {
     background: #ddd;
     top: 0;
     right: 0;
-    left: 0;
+    left: -2px;
+    padding-left: 2px;
     white-space: pre-line;
 }
 .items .item:hover .memo .full {

@@ -111,7 +111,7 @@ LOGIN_REDIRECT_URL = '/console/'
 ACCOUNT_ACTIVATION_DAYS = 7
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff',),
+    'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff', 'rest_framework.permissions.IsAuthenticated', ),
     'PAGINATE_BY': 10
 }
 

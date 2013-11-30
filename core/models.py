@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Item(models.Model):
-    user = models.ForeignKey(get_user_model())
+    user = models.ForeignKey(get_user_model(), blank=True, null=True)  # handled in: api.serializers.ItemSerializer.save_object()
     priority = models.PositiveIntegerField(name=u'priority', default=0, blank=True, null=False)
     due_date = models.DateField(name=u'due_date', default=None, blank=True, null=True)
     completed = models.BooleanField(name=u'completed', default=False, blank=True, null=False)

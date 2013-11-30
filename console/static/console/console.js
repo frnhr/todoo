@@ -1,6 +1,7 @@
 
 jQuery.wait = function(time) {
     return $.Deferred(function(dfd) {
+        //noinspection JSUnresolvedVariable
         setTimeout(dfd.resolve, time);
     });
 };
@@ -147,7 +148,7 @@ jQuery(function($){
         $ul.find('li.item:not(.prototype):not(.protoform):not(.header)').remove();
         var $prototype = $ul.find('li.prototype');
         $.each(items, function(i, item){
-            $item = $prototype.clone().removeClass('prototype');
+            var $item = $prototype.clone().removeClass('prototype');
             $item
                 .find('.completed input')
                     .prop('checked', item.completed)
@@ -162,7 +163,7 @@ jQuery(function($){
                     .html(item.priority)
                     .end()
                 .data('item', item);
-            if ( item.due_date ) {
+            if ( typeof item.due_date === 'string' && item.due_date.length ) {
                 $item.find('.due_date')
                     .data('value', item.due_date)
                     .i18Now(dateFormats.usa_short)
@@ -215,7 +216,6 @@ jQuery(function($){
 
     var new_click = function(event) {
         event.preventDefault();
-        var $this = $(this);
         var $form = $items.find('.item.protoform').clone().removeClass('protoform').addClass('form').show();
         $form.insertAfter($items.find('.item.header'));
         var item = jQuery.extend({}, blank_item);
@@ -256,9 +256,9 @@ jQuery(function($){
                 .end()
             .find('.priority input')
                 .val(item.priority)
-                .end()
+                .end();
         $form.find('.due_date input').DatePicker({
-            date: item.due_date,
+            date: (item.due_date) ? item.due_date : new Date().toDateString(),
             onChange : function(date_str, date, input){
                 $(input).val(date_str);
             }
@@ -335,6 +335,7 @@ jQuery(function($){
             dfd.resolve(data);
         }).fail(function(data){
                 var errors;
+                //noinspection JSUnresolvedVariable
                 if (typeof data.responseJSON !== 'undefined') {
                     errors = data.responseJSON
                 } else {
@@ -347,7 +348,6 @@ jQuery(function($){
 
     var delete_item = function(item) {
         var dfd = $.Deferred();
-        //item.priority=123;
         var method = 'DELETE';
         $.ajax({
             method: method,
@@ -374,12 +374,12 @@ jQuery(function($){
         $.prompt("Really delete this item?", {
             title: "Are you Serious?",
             buttons: { "Yes, Ok, Delete": true, "No, Cancel, Whaat?": false },
-            submit: function(e,v,m,f){
+            submit: function(e, v){
                 if ( v == true ) {
                     $.when(
                         delete_item(item),
                         $.wait(500)  // sense of heavy, baby!
-                    ).done(function(data){
+                    ).done(function(){
                         $item.remove();
                     });
                 }
