@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'core',
     'api',
     'console',
+    'registration',
     'rest_framework',
     'markdown',
     'django_filters',
@@ -90,6 +91,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEFAULT_FROM_EMAIL = 'noreply@todoo.tocka.tk'
+EMAIL_HOST = 'smtp.webfaction.com'
+EMAIL_HOST_PASSWORD = '25652565'
+EMAIL_HOST_USER = 'todoo'
+#EMAIL_USE_SSL = True
+#EMAIL_PORT = 465
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -99,6 +107,8 @@ STATIC_URL = '/static/'
 APPEND_SLASH = True
 
 LOGIN_REDIRECT_URL = '/console/'
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff',),
