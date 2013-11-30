@@ -25,7 +25,7 @@ SECRET_KEY = '@m2(l2(!q+r(9zy(f_@pf9_kev))fxvrd3y+bec(^+c7xuiq5k'
 DEBUG = True
 
 TEMPLATE_DIRS = (
-    path.join(path.dirname(path.dirname(path.abspath(__file__))), 'templates'),
+    path.join(BASE_DIR, 'templates'),
 )
 
 TEMPLATE_DEBUG = True
