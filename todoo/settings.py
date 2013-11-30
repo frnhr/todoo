@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from os import path
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -21,6 +23,10 @@ SECRET_KEY = '@m2(l2(!q+r(9zy(f_@pf9_kev))fxvrd3y+bec(^+c7xuiq5k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+TEMPLATE_DIRS = (
+    path.join(path.dirname(path.dirname(path.abspath(__file__))), 'templates'),
+)
 
 TEMPLATE_DEBUG = True
 
