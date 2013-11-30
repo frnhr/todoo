@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework.reverse import reverse as rest_framework_reverse
 from core.models import Item
 from rest_framework import serializers
@@ -29,3 +30,10 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = ('url', 'title', 'user', 'memo', 'priority', 'due_date', 'completed', )
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'email', )
+
