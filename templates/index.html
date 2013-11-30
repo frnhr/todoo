@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<h1>ToDoo app</h1>
 <p>Best todo ever!</p>
 <p>Grab an <a href="{% url 'registration_register' %}">account</a>! Oh, you have an account? Good for you! Still here? <a href="{% url 'login' %}">Go login yourself!</a></p>
+{% if user.is_authenticated %}
+    <p>
+        Oh my oh my! Looks like you ARE logged in, {{ user.username }}! What on Earth are you doing here then?!
+        <a href="{% url 'console_index' %}">Go and doo something!</a><br />
+        You are not {{ user.username }}? Please be a nice fellow and <a href="{% url 'logout' %}">logout now now now!!!</a>
+    </p>
+{% endif %}
 {% endblock main %}

@@ -10,11 +10,30 @@
     <script type="text/javascript" src="{% static "console/jquery.i18Now.1.4.0.js" %}"></script>
     <script type="text/javascript" src="{% static "console/jquery-ipromptu/jquery-impromptu.min.js" %}"></script>
     <link rel="stylesheet" href="{% static "console/jquery-ipromptu/jquery-impromptu.min.css" %}" type="text/css" media="all">
+    <link rel="stylesheet" media="screen" type="text/css" href="{% static "console/datepicker/css/datepicker.css" %}" />
+    <script type="text/javascript" src="{% static "console/datepicker/js/datepicker.js" %}"></script>
     <script type="text/javascript" src="{% static "console/console.js" %}"></script>
 </head>
 <body>
     <div class="container">
         <h1>ToDoo app</h1>
+        {% spaceless %}
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'console_index' %}">Console</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endspaceless %}
         <div class="nojs error">ToDoo needs JavaScript enabled in order to doo!</div>
         <div class="yesjs">
             {% block main %}{% block content %}Main content here{% endblock %}{% endblock %}

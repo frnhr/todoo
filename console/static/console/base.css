@@ -43,19 +43,54 @@ textarea {
 
 .items {
     position: relative;
+    overflow: visible;
+    list-style: none;
 }
 
 .items .item {
     z-index: 1;
+}
+.items .item:hover,
+.items .item.form {
+    z-index: 2;
+    background: #ddd;
+    -webkit-box-shadow: 2px 2px 1px rgba(100, 100, 100, 1);
+    -moz-box-shadow:    2px 2px 1px rgba(100, 100, 100, 1);
+    box-shadow:         2px 2px 1px rgba(100, 100, 100, 1);
 }
 
 .items .item .completed {
     text-align: center  ;
 }
 
+.items .item .memo {
+    position: relative;
+    overflow: visible;
+}
+.items .item .memo .title {
+    height: 1.5em;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+}
+
 .items .item .memo .full {
     display: none;
+    position: absolute;
+    background: #ddd;
+    top: 0;
+    right: 0;
+    left: 0;
+    white-space: pre-line;
 }
+.items .item:hover .memo .full {
+    display: block;
+    -webkit-box-shadow: 2px 2px 1px rgba(100, 100, 100, 1);
+    -moz-box-shadow:    2px 2px 1px rgba(100, 100, 100, 1);
+    box-shadow:         2px 2px 1px rgba(100, 100, 100, 1);
+}
+
+
 .items .item .hoverable_actions {
     opacity: 0;
 }
@@ -102,11 +137,25 @@ textarea {
 .items .item.form textarea {
     height: 4em;
     width: 97%;
+    margin-top: 9px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
+nav > ul {
+    list-style: none;
+}
+nav > ul > li {
+    display: inline-block;
+}
+nav > ul > li > a {
+    padding: 5px 5px;
+}
 .jqibox form {
     margin: 0;
+}
+
+.datepicker {
+    z-index: 10;
 }
