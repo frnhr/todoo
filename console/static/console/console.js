@@ -73,6 +73,7 @@ jQuery(function($){
         }).done(function(data){
             dfd.resolve(data);
         }).fail(function(data){
+            //@TODO standardize this
             var errors;
             //noinspection JSUnresolvedVariable
             if (typeof data.responseJSON !== 'undefined') {
@@ -91,7 +92,7 @@ jQuery(function($){
             method: 'PATCH',
             url: item.url,
             data : {completed: item.completed}
-        });
+        }); //@TODO error handling
     };
 
 
@@ -104,6 +105,7 @@ jQuery(function($){
         }).done(function(data){
             dfd.resolve(data);
         }).fail(function(data){
+            //@TODO standardize this
             var errors;
             if (typeof data.responseJSON !== 'undefined') {
                 errors = data.responseJSON
