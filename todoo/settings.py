@@ -103,6 +103,7 @@ EMAIL_HOST_USER = 'todoo'
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 APPEND_SLASH = True
 
