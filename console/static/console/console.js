@@ -43,13 +43,14 @@ jQuery(function($){
             $.ajax({
                 url: url
             }).done(function(data) {
-                //@TODO error handling
                 items = items.concat(data.results);
                 if ( data.next ) {
                     ajax_fetch(data.next);
                 } else {
                     dfd.resolve(items);
                 }
+            }).fail(function(data){
+                $.prompt('Please try reloading the page.<br />Details:<br />'+JSON.stringify(data), {title:'Error talking to server!', buttons: {'Sorry :(' : true}})
             });
         };
         ajax_fetch(api_items_url);
@@ -72,6 +73,7 @@ jQuery(function($){
         }).done(function(data){
             dfd.resolve(data);
         }).fail(function(data){
+            //@TODO standardize this
             var errors;
             //noinspection JSUnresolvedVariable
             if (typeof data.responseJSON !== 'undefined') {
@@ -90,7 +92,7 @@ jQuery(function($){
             method: 'PATCH',
             url: item.url,
             data : {completed: item.completed}
-        });
+        }); //@TODO error handling
     };
 
 
@@ -103,6 +105,7 @@ jQuery(function($){
         }).done(function(data){
             dfd.resolve(data);
         }).fail(function(data){
+            //@TODO standardize this
             var errors;
             if (typeof data.responseJSON !== 'undefined') {
                 errors = data.responseJSON
@@ -211,6 +214,19 @@ jQuery(function($){
         });
     };
 
+
+    var render_errors = function(data, $form) {
+        var $span;
+        $form.removeClass('working');
+        $.each(data, function(key, val){
+            $span = $form.find('.'+key).find('.errors');
+            if (! $span.length) {
+                $span = $form.find('.completed').find('.errors');
+            }
+            $span.html('');
+            $('<span class="error"></span>').html(val).appendTo($span);
+        });
+    };
 
     /***** end FRONTEND HELPERS *****/
 
@@ -356,28 +372,27 @@ jQuery(function($){
         var old_item = $form.data('item');
         var new_item = parse_form($form);
         var $ul = $form.parents('.items');
-        $form.addClass('working');
+        $form.addClass('working').find('.errors').html('');
         $.when(
-                put_or_post_item(new_item),
-                (function(){
-                    var dfd = $.Deferred();
-                    dfd.reject();
-                    //return dfd;
-                })(),
-                heavy_feel_wait()
-            ).done(function(data){
-                var i = items.indexOf(old_item);
-                if (i > -1) {
-                    items.splice(i, 1);
-                }
-                items.push(data);
-                items = sort_items(items, $ul);
-                render_items(items, $ul);
-            }).fail(function(data){
-                console.error('FAIL');
-                console.info(data);
-                //@TODO render errors
+            put_or_post_item(new_item),
+            (function(){
+                var dfd = $.Deferred();
+                dfd.reject();
+            })(),
+            heavy_feel_wait()
+        ).done(function(data){
+            var i = items.indexOf(old_item);
+            if (i > -1) {
+                items.splice(i, 1);
+            }
+            items.push(data);
+            items = sort_items(items, $ul);
+            render_items(items, $ul);
+        }).fail(function(data){
+            heavy_feel_wait().done(function(){
+                render_errors(data, $form);
             });
+        });
     };
     $items.on('click', '.item.form a.save', save_click);
 
@@ -396,6 +411,11 @@ jQuery(function($){
                         heavy_feel_wait()
                     ).done(function(){
                         $item.remove();
+                    }).fail(function(data) {
+                        heavy_feel_wait().done(function(){
+                            $item.find('a.edit').click();
+                            render_errors(data, $items.find('.form'));
+                        });
                     });
                 }
             }

@@ -10,11 +10,12 @@
                     <input type="hidden" value="{% url 'item-list' %}" class="api_items_url" />
                 </li>
                 <li class="item protoform grid">
-                    <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="save">save</a> / <a href="#" class="cancel">cancel</a></span>
-                    <span class="priority unit one-of-five"><input type="text" id="input_priority" /></span>
-                    <span class="due_date unit one-of-five"><input type="text" id="input_due_date" /></span>
+                    <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="save">save</a> / <a href="#" class="cancel">cancel</a><span class="errors"></span></span>
+                    <span class="priority unit one-of-five"><input type="text" id="input_priority" /><span class="errors"></span></span>
+                    <span class="due_date unit one-of-five"><input type="text" id="input_due_date" /><span class="errors"></span></span>
                     <span class="memo unit two-of-five">
                         <textarea id="input_memo"></textarea>
+                        <span class="errors"></span>
                     </span>
                 </li>
                 <li class="item grid prototype">
