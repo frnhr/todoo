@@ -10,6 +10,7 @@ jQuery(function($){
 
     var items;
     var $items = $('ul.items');
+    var api_items_url = $items.find('.api_items_url').val();
     $items.data('sortby', 'priority');
     $items.data('sortdir', -1);
 
@@ -52,7 +53,7 @@ jQuery(function($){
                     }
                 });
         };
-        ajax_fetch("/api/items/"); //@TODO pass dynamically
+        ajax_fetch(api_items_url);
 
         return dfd;
     };
@@ -300,7 +301,7 @@ jQuery(function($){
 
 
     var blank_item = {
-        url : '/api/items/', //@TODO pass dynamically
+        url : api_items_url,
         priority : '',
         due_date : '',
         memo : ''

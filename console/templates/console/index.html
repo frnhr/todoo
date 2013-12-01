@@ -7,6 +7,7 @@
             <ul class="items unit span-grid">
                 <li class="actions unit">
                     <a href="#" class="new_item">Add New Item</a>
+                    <input type="hidden" value="{% url 'item-list' %}" class="api_items_url" />
                 </li>
                 <li class="item protoform grid">
                     <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="save">save</a> / <a href="#" class="cancel">cancel</a></span>
