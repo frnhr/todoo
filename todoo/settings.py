@@ -131,4 +131,6 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 3
 }
 
+GRAPPELLI_ADMIN_TITLE = u'ToDoo administration panel'
+
 #@TODO add settings_local.py or check out what's this all about: http://www.rdegges.com/the-perfect-django-settings-file/
