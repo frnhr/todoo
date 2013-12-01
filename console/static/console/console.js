@@ -212,6 +212,19 @@ jQuery(function($){
     };
 
 
+    var render_errors = function(data, $form) {
+        var $span;
+        $form.removeClass('working');
+        $.each(data, function(key, val){
+            $span = $form.find('.'+key).find('.errors');
+            if (! $span.length) {
+                $span = $form.find('.completed').find('.errors');
+            }
+            $span.html('');
+            $('<span class="error"></span>').html(val).appendTo($span);
+        });
+    };
+
     /***** end FRONTEND HELPERS *****/
 
 
@@ -356,28 +369,27 @@ jQuery(function($){
         var old_item = $form.data('item');
         var new_item = parse_form($form);
         var $ul = $form.parents('.items');
-        $form.addClass('working');
+        $form.addClass('working').find('.errors').html('');
         $.when(
-                put_or_post_item(new_item),
-                (function(){
-                    var dfd = $.Deferred();
-                    dfd.reject();
-                    //return dfd;
-                })(),
-                heavy_feel_wait()
-            ).done(function(data){
-                var i = items.indexOf(old_item);
-                if (i > -1) {
-                    items.splice(i, 1);
-                }
-                items.push(data);
-                items = sort_items(items, $ul);
-                render_items(items, $ul);
-            }).fail(function(data){
-                console.error('FAIL');
-                console.info(data);
-                //@TODO render errors
+            put_or_post_item(new_item),
+            (function(){
+                var dfd = $.Deferred();
+                dfd.reject();
+            })(),
+            heavy_feel_wait()
+        ).done(function(data){
+            var i = items.indexOf(old_item);
+            if (i > -1) {
+                items.splice(i, 1);
+            }
+            items.push(data);
+            items = sort_items(items, $ul);
+            render_items(items, $ul);
+        }).fail(function(data){
+            heavy_feel_wait().done(function(){
+                render_errors(data, $form);
             });
+        });
     };
     $items.on('click', '.item.form a.save', save_click);
 
@@ -396,6 +408,11 @@ jQuery(function($){
                         heavy_feel_wait()
                     ).done(function(){
                         $item.remove();
+                    }).fail(function(data) {
+                        heavy_feel_wait().done(function(){
+                            $item.find('a.edit').click();
+                            render_errors(data, $items.find('.form'));
+                        });
                     });
                 }
             }
