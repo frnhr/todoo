@@ -131,3 +131,4 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 3
 }
 
+#@TODO add settings_local.py or check out what's this all about: http://www.rdegges.com/the-perfect-django-settings-file/
