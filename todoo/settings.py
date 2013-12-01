@@ -59,7 +59,7 @@ INSTALLED_APPS = (
 )
 
 if DEBUG:
-    INSTALLED_APPS = (
+    INSTALLED_APPS += (
         'werkzeug',
         'django_extensions',
     )
