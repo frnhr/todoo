@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
-    'django_extensions',
     'core',
     'api',
     'console',
@@ -58,6 +57,13 @@ INSTALLED_APPS = (
     'grappelli',
     'django.contrib.admin',
 )
+
+if DEBUG:
+    INSTALLED_APPS = (
+        'werkzeug',
+        'django_extensions',
+    )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
