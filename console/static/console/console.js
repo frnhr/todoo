@@ -43,13 +43,14 @@ jQuery(function($){
             $.ajax({
                 url: url
             }).done(function(data) {
-                //@TODO error handling
                 items = items.concat(data.results);
                 if ( data.next ) {
                     ajax_fetch(data.next);
                 } else {
                     dfd.resolve(items);
                 }
+            }).fail(function(data){
+                $.prompt('Please try reloading the page.<br />Details:<br />'+JSON.stringify(data), {title:'Error talking to server!', buttons: {'Sorry :(' : true}})
             });
         };
         ajax_fetch(api_items_url);
