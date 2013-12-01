@@ -12,7 +12,8 @@ class Migration(DataMigration):
         # Use orm.ModelName to refer to models in this application,
         # and orm['appname.ModelName'] for models in other applications.
         from django.core.management import call_command
-        call_command("loaddata", "todoo/fixtures/initial_data.json")
+        call_command("loaddata", "todoo/fixtures/auth.json")
+        call_command("loaddata", "todoo/fixtures/core.json")
 
     def backwards(self, orm):
         "Write your backwards methods here."
