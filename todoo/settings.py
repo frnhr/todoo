@@ -24,6 +24,11 @@ SECRET_KEY = '@m2(l2(!q+r(9zy(f_@pf9_kev))fxvrd3y+bec(^+c7xuiq5k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
 TEMPLATE_DIRS = (
     path.join(BASE_DIR, 'templates'),
 )
@@ -36,7 +41,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -51,6 +55,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'markdown',
     'django_filters',
+    'grappelli',
     'django.contrib.admin',
 )
 
@@ -67,6 +72,10 @@ ROOT_URLCONF = 'todoo.urls'
 
 WSGI_APPLICATION = 'todoo.wsgi.application'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
