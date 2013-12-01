@@ -42,16 +42,15 @@ jQuery(function($){
         var ajax_fetch = function(url) {
             $.ajax({
                 url: url
-            })
-                .done(function(data) {
-                    //@TODO error handling
-                    items = items.concat(data.results);
-                    if ( data.next ) {
-                        ajax_fetch(data.next);
-                    } else {
-                        dfd.resolve(items);
-                    }
-                });
+            }).done(function(data) {
+                //@TODO error handling
+                items = items.concat(data.results);
+                if ( data.next ) {
+                    ajax_fetch(data.next);
+                } else {
+                    dfd.resolve(items);
+                }
+            });
         };
         ajax_fetch(api_items_url);
 
@@ -70,19 +69,18 @@ jQuery(function($){
             method: method,
             url: item.url,
             data : item
-        })
-            .done(function(data){
-                dfd.resolve(data);
-            }).fail(function(data){
-                var errors;
-                //noinspection JSUnresolvedVariable
-                if (typeof data.responseJSON !== 'undefined') {
-                    errors = data.responseJSON
-                } else {
-                    errors = ['unknown error!'];
-                }
-                dfd.reject(errors)
-            });
+        }).done(function(data){
+            dfd.resolve(data);
+        }).fail(function(data){
+            var errors;
+            //noinspection JSUnresolvedVariable
+            if (typeof data.responseJSON !== 'undefined') {
+                errors = data.responseJSON
+            } else {
+                errors = ['unknown error!'];
+            }
+            dfd.reject(errors)
+        });
         return dfd;
     };
 
@@ -93,18 +91,17 @@ jQuery(function($){
         $.ajax({
             method: method,
             url: item.url
-        })
-            .done(function(data){
-                dfd.resolve(data);
-            }).fail(function(data){
-                var errors;
-                if (typeof data.responseJSON !== 'undefined') {
-                    errors = data.responseJSON
-                } else {
-                    errors = ['unknown error!'];
-                }
-                dfd.reject(errors)
-            });
+        }).done(function(data){
+            dfd.resolve(data);
+        }).fail(function(data){
+            var errors;
+            if (typeof data.responseJSON !== 'undefined') {
+                errors = data.responseJSON
+            } else {
+                errors = ['unknown error!'];
+            }
+            dfd.reject(errors)
+        });
         return dfd;
     };
 
@@ -326,8 +323,7 @@ jQuery(function($){
                     data : item
                 }),
                 heavy_feel_wait()
-            )
-            .done(function(data){
+            ).done(function(data){
                 $this.prop('checked', data.checked);
                 $this.attr('disabled', false);
             });
