@@ -85,6 +85,15 @@ jQuery(function($){
     };
 
 
+    var toggle_complete_item = function(item) {
+        return $.ajax({
+            method: 'PATCH',
+            url: item.url,
+            data : {completed: item.completed}
+        });
+    };
+
+
     var delete_item = function(item) {
         var dfd = $.Deferred();
         var method = 'DELETE';
@@ -317,11 +326,7 @@ jQuery(function($){
         item.completed = $this.is(':checked');
         $this.attr('disabled', 'disabled');
         $.when(
-                $.ajax({
-                    method: 'PUT',
-                    url: $item.data('item').url,
-                    data : item
-                }),
+                toggle_complete_item(item),
                 heavy_feel_wait()
             ).done(function(data){
                 $this.prop('checked', data.checked);
