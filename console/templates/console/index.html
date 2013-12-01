@@ -1,0 +1,46 @@
+{% extends 'console/base.html' %}
+
+<!--suppress HtmlFormInputWithoutLabel -->
+{% block main %}
+    <div class="app">
+        <div class="hidden_ grid">
+            <ul class="items unit span-grid">
+                <li class="actions unit">
+                    <a href="#" class="new_item">Add New Item</a>
+                    <input type="hidden" value="{% url 'item-list' %}" class="api_items_url" />
+                </li>
+                <li class="item protoform grid">
+                    <span class="completed unit one-of-five"><input type="checkbox" /> / <a href="#" class="save">save</a> / <a href="#" class="cancel">cancel</a><span class="errors"></span></span>
+                    <span class="priority unit one-of-five"><input type="text" id="input_priority" /><span class="errors"></span></span>
+                    <span class="due_date unit one-of-five"><input type="text" id="input_due_date" /><span class="errors"></span></span>
+                    <span class="memo unit two-of-five">
+                        <textarea id="input_memo"></textarea>
+                        <span class="errors"></span>
+                    </span>
+                </li>
+                <li class="item grid prototype">
+                    <span class="completed unit one-of-five"><span class="hoverable_actions"><a href="#" class="delete">delete</a> /</span> <input type="checkbox" /> <span class="hoverable_actions">/ <a href="#" class="edit">edit</a></span></span>
+                    <span class="priority unit one-of-five"></span>
+                    <span class="due_date unit one-of-five"></span>
+                        <span class="memo unit two-of-five">
+                            <span class="title"></span>
+                            <span class="full"></span>
+                        </span>
+                </li>
+                <li class="item grid header">
+                    <span class="completed unit one-of-five">Actions</span>
+                    <span class="priority unit one-of-five sortable" data-sortby="priority" data-sortdir="-1">Priority</span>
+                    <span class="due_date unit one-of-five sortable" data-sortby="due_date" data-sortdir="1">Due date</span>
+                    <span class="memo unit two-of-five">
+                        <span class="title">Memo</span>
+                        <span class="full"></span>
+                    </span>
+                </li>
+                <li class="item unit loading">
+                    now loading...
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock main %}

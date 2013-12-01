@@ -1,19 +1,18 @@
-from django.shortcuts import render
-
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from core.models import Item
 from rest_framework import viewsets
-from api.serializers import UserSerializer, GroupSerializer, ItemSerializer
-import permissions
+from api.serializers import UserSerializer, ItemSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows todoo items to be viewed or edited.
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = (permissions.IsOwnerOrStaff,)
+
+    def get_queryset(self):
+        return super(ItemViewSet, self).get_queryset().filter(user__id=self.request.user.id)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,10 +22,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        queryset = super(UserViewSet, self).get_queryset()
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(id=self.request.user.id)
+        return queryset
 
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+    def get_permissions(self):
+        return super(UserViewSet, self).get_permissions()
+

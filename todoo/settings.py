@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from os import path
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -21,6 +23,10 @@ SECRET_KEY = '@m2(l2(!q+r(9zy(f_@pf9_kev))fxvrd3y+bec(^+c7xuiq5k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+TEMPLATE_DIRS = (
+    path.join(BASE_DIR, 'templates'),
+)
 
 TEMPLATE_DEBUG = True
 
@@ -40,6 +46,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'core',
     'api',
+    'console',
+    'registration',
     'rest_framework',
     'markdown',
     'django_filters',
@@ -83,16 +91,28 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEFAULT_FROM_EMAIL = 'noreply@todoo.tocka.tk'
+EMAIL_HOST = 'smtp.webfaction.com'
+EMAIL_HOST_PASSWORD = '25652565'
+EMAIL_HOST_USER = 'todoo'
+#EMAIL_USE_SSL = True
+#EMAIL_PORT = 465
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 APPEND_SLASH = True
 
+LOGIN_REDIRECT_URL = '/console/'
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
+    'DEFAULT_PERMISSION_CLASSES': ('api.permissions.IsOwnerOrStaff', 'rest_framework.permissions.IsAuthenticated', ),
+    'PAGINATE_BY': 3
 }
 

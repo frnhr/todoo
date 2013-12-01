@@ -1,11 +1,19 @@
+from django.contrib.auth.models import User
 from rest_framework import permissions
 
-
 class IsOwnerOrStaff(permissions.BasePermission):
-    """
-    Custom permission to only allow owners of an object to edit it.
-    """
+
+    def has_permission(self, request, view):
+        # Take care! This gets called on all Views
+        return super(IsOwnerOrStaff, self).has_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
-        # Write permissions are only allowed to the owner of the snippet
-        return obj.user == request.user or request.user.is_staff
+        # Take care! This gets called ONLY on single-object Views (and not on lists)!
+        permitted = False
+        try:
+            permitted = obj.user == request.user
+        except AttributeError:
+            pass
+        if isinstance(obj, User) and obj.id == request.user.id:
+            permitted = True
+        return permitted or request.user.is_staff
