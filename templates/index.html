@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block main %}
+{% block content %}
 <p>Best todo ever!</p>
 <p>Grab an <a href="{% url 'registration_register' %}">account</a>! Oh, you have an account? Good for you! Still here? <a href="{% url 'login' %}">Go login yourself!</a></p>
 {% if user.is_authenticated %}
@@ -10,4 +10,4 @@
         You are not {{ user.username }}? Please be a nice fellow and <a href="{% url 'logout' %}">logout now now now!!!</a>
     </p>
 {% endif %}
-{% endblock main %}
+{% endblock content %}

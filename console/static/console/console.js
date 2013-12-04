@@ -130,13 +130,18 @@ jQuery(function($){
         return function(a, b) {
             var aName = a[field];
             var bName = b[field];
-            if (aName == null) aName = '0';
-            if (bName == null) bName = '0';
-            var compare =  ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)) * direction;
-            if (compare === 0) {
-                compare = ((a.url < b.url) ? -1 : ((a.url > b.url) ? 1 : 0)) * direction;
+            if (field === 'priority') {
+                if (aName == null) aName = -1;
+                if (bName == null) bName = -1;
+            } else if (field === 'due_date') {
+                if (aName == null) aName = '0000-00-00';
+                if (bName == null) bName = '0000-00-00';
             }
-            return compare
+            var compare =  ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            if (compare === 0) {
+                compare = ((a.url < b.url) ? -1 : ((a.url > b.url) ? 1 : 0));
+            }
+            return compare * direction;
         }
     };
 

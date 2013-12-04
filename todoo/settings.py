@@ -24,6 +24,11 @@ SECRET_KEY = '@m2(l2(!q+r(9zy(f_@pf9_kev))fxvrd3y+bec(^+c7xuiq5k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
 TEMPLATE_DIRS = (
     path.join(BASE_DIR, 'templates'),
 )
@@ -36,14 +41,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
-    'django_extensions',
     'core',
     'api',
     'console',
@@ -51,8 +54,16 @@ INSTALLED_APPS = (
     'rest_framework',
     'markdown',
     'django_filters',
+    'grappelli',
     'django.contrib.admin',
 )
+
+if DEBUG:
+    INSTALLED_APPS += (
+        'werkzeug',
+        'django_extensions',
+    )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,6 +78,10 @@ ROOT_URLCONF = 'todoo.urls'
 
 WSGI_APPLICATION = 'todoo.wsgi.application'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -116,3 +131,6 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 3
 }
 
+GRAPPELLI_ADMIN_TITLE = u'ToDoo administration panel'
+
+#@TODO add settings_local.py or check out what's this all about: http://www.rdegges.com/the-perfect-django-settings-file/
