@@ -1,1 +1,1 @@
-Activate Your ToDoo Account!
+{% load i18n %}{% blocktrans with sitename=site.name %}Account registration for {{ sitename }}{% endblocktrans %}
